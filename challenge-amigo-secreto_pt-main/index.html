@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Amigo Secreto</title>
+</head>
+
+<body>
+    <main class="main-content">
+        <header class="header-banner">
+            <h1 class="main-title">Amigo Secreto</h1>
+            <img src="assets/amigo-secreto.png" alt="Imagem representativa de amigo secreto">
+        </header>
+        
+        <section class="input-section">
+            <h2 class="section-title">Digite o nome dos seus amigos</h2>
+            <div class="input-wrapper">
+                <input type="text" id="amigo" class="input-name" placeholder="Digite um nome">
+                <button class="button-add" onclick="adicionarAmigo()">Adicionar</button>
+            </div>
+           
+            <ul id="listaAmigos" class="name-list" aria-labelledby="listaAmigos" role="list"></ul>
+            <ul id="resultado" class="result-list" aria-live="polite"></ul>
+
+            <div class="button-container">
+                <button class="button-draw" onclick="sortearAmigo()" aria-label="Sortear amigo secreto">
+                    <img src="assets/play_circle_outline.png" alt="Ícone para sortear">
+                    Sortear amigo
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Array para armazenar os nomes dos amigos
+        let amigos = [];
+
+        // Função para adicionar amigos
+        function adicionarAmigo() {
+            // Captura o valor do campo de entrada
+            const nomeAmigo = document.getElementById('amigo').value.trim();
+
+            // Valida a entrada
+            if (nomeAmigo === "") {
+                alert("Por favor, insira um nome.");
+                return; // Sai da função se o campo estiver vazio
+            }
+
+            // Verifica se o nome já foi adicionado
+            if (amigos.includes(nomeAmigo)) {
+                alert("Este nome já foi adicionado.");
+                return; // Sai da função se o nome já existir
+            }
+
+            // Adiciona o nome ao array de amigos
+            amigos.push(nomeAmigo);
+
+            // Limpa o campo de entrada
+            document.getElementById('amigo').value = "";
+
+            // Atualiza a lista de amigos na página
+            atualizarListaAmigos();
+        }
+
+        // Função para atualizar a lista de amigos na página
+        function atualizarListaAmigos() {
+            const listaAmigos = document.getElementById('listaAmigos');
+            listaAmigos.innerHTML = ""; // Limpa a lista atual
+
+            // Adiciona cada amigo à lista
+            amigos.forEach(amigo => {
+                const itemLista = document.createElement('li');
+                itemLista.textContent = amigo;
+                listaAmigos.appendChild(itemLista);
+            });
+        }
+
+        // Função para sortear um único amigo secreto
+        function sortearAmigo() {
+            // Verifica se há pelo menos 1 amigo para sortear
+            if (amigos.length === 0) {
+                alert("Adicione pelo menos um amigo para sortear.");
+                return;
+            }
+
+            // Sorteia um índice aleatório do array de amigos
+            const indiceSorteado = Math.floor(Math.random() * amigos.length);
+            const amigoSorteado = amigos[indiceSorteado];
+
+            // Exibe o resultado na página
+            const resultadoElement = document.getElementById('resultado');
+            resultadoElement.innerHTML = ""; // Limpa o resultado anterior
+
+            const itemLista = document.createElement('li');
+            itemLista.textContent = `Amigo sorteado: ${amigoSorteado}`;
+            resultadoElement.appendChild(itemLista);
+        }
+    </script>
+</body>
+</html>
